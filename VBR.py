@@ -3,9 +3,10 @@ from prettytable import PrettyTable
 
 class VBR_Reader():
     def __init__(self, file, start=0):
+        self.start = start
         try:
             with open(file, 'rb') as bin_file:
-                bin_file.seek(start)
+                bin_file.seek(self.start)
                 self.data = bin_file.read(512)
         except FileNotFoundError:
             print(f'[-] "{file}" not found!')
@@ -33,20 +34,20 @@ class VBR_Reader():
 
     def _fat1_addr(self):
         # No of reserved sectors * bytes per sector
-        return hex(self._size_of_reserve() * self._BPS())
+        return hex(self._size_of_reserve() * self._BPS() + self.start)
 
     def _fat2_addr(self):
         # (No. of reserved sectors + Size of each FAT) * BPS
-        return hex((self._size_of_reserve() + self._fat_sizes()) * self._BPS())
+        return hex((self._size_of_reserve() + self._fat_sizes()) * self._BPS() + self.start)
 
     def _root_addr(self):
         # No of reserved sectors + (no. of FAT’s * Size of each FAT)
-        return hex((self._size_of_reserve() + (self._fat_cnt() * self._fat_sizes()))*self._BPS())
+        return hex((self._size_of_reserve() + (self._fat_cnt() * self._fat_sizes())) * self._BPS() + self.start)
 
     def _cl_2_addr(self):
         # (Sector address of RD + size in sectors of RD) * BPS
-        return hex((int(self._root_addr(), 16) // self._BPS() + self._root_dr_sz() // self._BPS()) * self._BPS())
-        
+        return hex(((int(self._root_addr(), 16) - self.start) // self._BPS() + self._root_dr_sz() // self._BPS()) * self._BPS() + self.start)
+
     def output(self):
         table = PrettyTable()
         table.field_names = ['BPS', 'Cluster Size', 'Reserve Size', 'Numbers of FATs', 'Root Max Entries', 'Root Size', 'FAT size', 'FAT1 address', 'FAT2 address', 'Root address', 'Cluster 2 addr']
