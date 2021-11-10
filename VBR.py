@@ -44,7 +44,8 @@ class VBR_Reader():
         return hex((self._size_of_reserve() + (self._fat_cnt() * self._fat_sizes()))*self._BPS())
 
     def _cl_2_addr(self):
-        return hex((self._size_of_reserve() + (self._fat_cnt() *self._fat_sizes()) + (self._root_dr_sz()//self._BPS()))*self._BPS())
+        # (Sector address of RD + size in sectors of RD) * BPS
+        return hex((int(self._root_addr(), 16) // self._BPS() + self._root_dr_sz() // self._BPS()) * self._BPS())
         
     def output(self):
         table = PrettyTable()
