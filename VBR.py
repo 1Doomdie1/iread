@@ -14,35 +14,38 @@ class VBR_Reader():
         return int.from_bytes(self.data[11:13], 'little')
 
     def _cluster_size(self):
-        return self.data[13]
+        return self.data[13] # Sectors per cluster (sectors)
 
     def _size_of_reserve(self):
-        return int.from_bytes(self.data[14:16], 'little')
+        return int.from_bytes(self.data[14:16], 'little') # sectors
 
     def _fat_cnt(self):
-        return self.data[16]
+        return self.data[16] # number of FAT's
 
     def _max_entries(self):
-        return int.from_bytes(self.data[17:19], 'little')
+        return int.from_bytes(self.data[17:19], 'little') # bytes
 
     def _root_dr_sz(self):
-        return self._max_entries() * 32
+        return self._max_entries() * 32 # bytes
 
     def _fat_sizes(self):
-        return int.from_bytes(self.data[22:24], 'little')
+        return int.from_bytes(self.data[22:24], 'little') # Sectors
 
     def _fat1_addr(self):
+        # No of reserved sectors * bytes per sector
         return hex(self._size_of_reserve() * self._BPS())
 
     def _fat2_addr(self):
+        # (No. of reserved sectors + Size of each FAT) * BPS
         return hex((self._size_of_reserve() + self._fat_sizes()) * self._BPS())
 
     def _root_addr(self):
-        return hex(((self._size_of_reserve() + self._fat_sizes() * self._fat_cnt())*self._BPS()))
+        # No of reserved sectors + (no. of FAT’s * Size of each FAT)
+        return hex((self._size_of_reserve() + (self._fat_cnt() * self._fat_sizes()))*self._BPS())
 
     def _cl_2_addr(self):
-        return hex(self._size_of_reserve() + (self._fat_sizes() * self._fat_cnt()) + self._root_dr_sz() )
-
+        return hex((self._size_of_reserve() + (self._fat_cnt() *self._fat_sizes()) + (self._root_dr_sz()//self._BPS()))*self._BPS())
+        
     def output(self):
         table = PrettyTable()
         table.field_names = ['BPS', 'Cluster Size', 'Reserve Size', 'Numbers of FATs', 'Root Max Entries', 'Root Size', 'FAT size', 'FAT1 address', 'FAT2 address', 'Root address', 'Cluster 2 addr']
