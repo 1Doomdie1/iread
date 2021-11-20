@@ -1,5 +1,6 @@
 import json
 
+
 class file_ex():
     def __init__(self, file, offset=0, size=16384):
         self.size = size
@@ -19,12 +20,18 @@ class file_ex():
         return ''.join([chr(i) for i in self.entries()[0][:12] if i in self.letters])
 
     def folders(self, d):
-        if self.file_type[hex(d[11])] == 'Directory':
-            return True
+        try:
+            if self.file_type[hex(d[11])] == 'Directory':
+                return True
+        except KeyError:
+            return False
 
     def files(self, d):
-        if self.file_type[hex(d[11])] == 'File':
-            return True
+        try:
+            if self.file_type[hex(d[11])] == 'File':
+                return True
+        except KeyError:
+            return False
 
     def f_attr(self, d):
         try:

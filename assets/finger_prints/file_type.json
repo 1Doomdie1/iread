@@ -7,6 +7,5 @@
 "0x10":"Directory",
 "0x12": "Directory",
 "0x16": "Directory",
-"0x20":"File",
-"0x22":"File"
+"0x20":"File"
 }
