@@ -5,8 +5,9 @@ from prettytable import PrettyTable
 class MBR_Reader():
     def __init__(self, file):
         # Try Load binary file
+        self.file = file
         try:
-            with open(file, 'rb') as p_data:
+            with open(self.file, 'rb') as p_data:
                 data = p_data.read(512)[446:]
             self.partition = [data[i:i+16] for i in range(0, 64, 16)]
         except FileNotFoundError:

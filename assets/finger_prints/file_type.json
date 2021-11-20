@@ -1,0 +1,12 @@
+{
+"0x1":"Read Only",
+"0x2":"Hidden File",
+"0x4":"System File",
+"0x8":"Volume Label",
+"0xf":"Long File Name",
+"0x10":"Directory",
+"0x12": "Directory",
+"0x16": "Directory",
+"0x20":"File",
+"0x22":"File"
+}
