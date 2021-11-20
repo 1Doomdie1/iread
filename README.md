@@ -42,6 +42,12 @@ py iread.py -m VBR -o 123456 -f file_name.001
 py iread.py -m VBR -f file_name.001
 ```
 
+- You can read the entries from RD using this command:
+
+```bash
+py iread.py -e file_name.001
+```
+
 - You can see all the flags that you can pass by running:
 
 ```bash
