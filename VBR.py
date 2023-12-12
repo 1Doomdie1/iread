@@ -54,7 +54,3 @@ class VBR_Reader():
         table.field_names = ['BPS', 'Cluster Size', 'Reserve Size', 'Numbers of FATs', 'Root Max Entries', 'Root Size', 'FAT size', 'FAT1 address', 'FAT2 address', 'Root address', 'Cluster 2 addr']
         table.add_row([self._BPS(), self._cluster_size(), self._size_of_reserve(), self._fat_cnt(), self._max_entries(), self._root_dr_sz(), self._fat_sizes(), self._fat1_addr(), self._fat2_addr(), self._root_addr(), self._cl_2_addr()])
         return(table)
-
-
-# circle_lenght = (PI * R * arch degrees)/ 180 degrees
-# 52 cm
